@@ -1,5 +1,5 @@
 const SHOPIFY_SECRET = process.env.SHOPIFY_SECRET;
-const SHOP_NAME = '4aaec3-2';  // Değişti
+const SHOP_NAME = '4aaec3-2';  // Bu değişikliği yapın
 const ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
 
 exports.handler = async (event) => {
