@@ -1,68 +1,83 @@
 const SHOPIFY_SECRET = process.env.SHOPIFY_SECRET;
+const SHOP_NAME = 'mywishangel'; // Shopify mağaza adınız
+const ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
 
 exports.handler = async (event) => {
   try {
+    console.log('Received webhook:', event.body);
+    
     if (!event.body) {
       return { statusCode: 400, body: 'No body' };
     }
 
     const data = JSON.parse(event.body);
-    console.log('Received order:', data);
+    console.log('Parsed order data:', data);
 
-    const lineItems = data.line_items || [];
-    for (const item of lineItems) {
+    // Test için log ekleyelim
+    console.log('Shop name:', SHOP_NAME);
+    console.log('Access token:', ACCESS_TOKEN ? 'Present' : 'Missing');
+
+    const customerId = data.customer && data.customer.id;
+    if (!customerId) {
+      console.log('No customer ID found in order');
+      return { statusCode: 400, body: 'No customer ID' };
+    }
+
+    let jetonMiktari = 0;
+    // Ürünleri kontrol et
+    for (const item of data.line_items || []) {
       if (item.title.includes('Jeton')) {
-        let jetonMiktari = 0;
-        
-        if (item.title.includes('5')) jetonMiktari = 5;
-        if (item.title.includes('10')) jetonMiktari = 10;
-        if (item.title.includes('20')) jetonMiktari = 20;
-        if (item.title.includes('50')) jetonMiktari = 50;
-
-        const customerId = data.customer.id;
-        await updateCustomerBalance(customerId, jetonMiktari);
+        if (item.title.includes('5')) jetonMiktari += 5;
+        if (item.title.includes('10')) jetonMiktari += 10;
+        if (item.title.includes('20')) jetonMiktari += 20;
+        if (item.title.includes('50')) jetonMiktari += 50;
       }
+    }
+
+    console.log('Calculated tokens:', jetonMiktari);
+
+    if (jetonMiktari > 0) {
+      const response = await fetch(
+        `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${customerId}/metafields.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': ACCESS_TOKEN
+          },
+          body: JSON.stringify({
+            metafield: {
+              namespace: 'custom',
+              key: 'jeton_bakiyesi',
+              value: jetonMiktari.toString(),
+              type: 'number_integer'
+            }
+          })
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Shopify API Error:', errorText);
+        throw new Error(`Shopify API Error: ${response.status} ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log('Metafield update result:', result);
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Success' })
+      body: JSON.stringify({ 
+        message: 'Success',
+        jetonMiktari: jetonMiktari
+      })
     };
   } catch (error) {
     console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to process order' })
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
-
-async function updateCustomerBalance(customerId, jetonMiktari) {
-  const SHOP_NAME = 'mywishangel';
-  const ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
-
-  const response = await fetch(
-    `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${customerId}/metafields.json`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': ACCESS_TOKEN
-      },
-      body: JSON.stringify({
-        metafield: {
-          namespace: 'custom',
-          key: 'jeton_bakiyesi',
-          value: jetonMiktari.toString(),
-          type: 'number_integer'
-        }
-      })
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to update customer balance');
-  }
-
-  return await response.json();
-}
