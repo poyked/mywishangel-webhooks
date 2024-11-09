@@ -7,188 +7,188 @@ exports.handler = async (event) => {
     let newBalance = 0;
 
     try {
-        console.log('Received event:', {
+        console.log('========== YENİ İSTEK ==========');
+        console.log('İstek Detayları:', {
             method: event.httpMethod,
+            path: event.path,
             headers: event.headers,
             body: event.body
         });
 
         if (!event.body) {
-            console.log('No body received');
-            return { statusCode: 400, body: 'No body' };
+            console.log('Body boş geldi');
+            return { 
+                statusCode: 400, 
+                body: JSON.stringify({ error: 'İstek body\'si boş' })
+            };
         }
 
-        // Determine if this is a wish request
+        // İsteğin türünü kontrol et
         const isWishRequest = event.headers['x-wish-request'] === 'true';
+        console.log('İstek Türü:', isWishRequest ? 'Dilek İsteği' : 'Sipariş Webhook');
+
+        const data = JSON.parse(event.body);
         
         if (isWishRequest) {
-            console.log('Processing wish request');
-            const wishData = JSON.parse(event.body);
-            console.log('Wish data:', wishData);
+            console.log('Dilek isteği işleniyor:', data);
 
-            if (!wishData.customerId || !wishData.dilek) {
+            if (!data.customerId || !data.dilek) {
                 return {
                     statusCode: 400,
-                    body: JSON.stringify({ error: 'Geçersiz dilek verisi' })
+                    body: JSON.stringify({ error: 'Müşteri ID veya dilek metni eksik' })
                 };
             }
 
-            // Check current balance
-            console.log('Checking balance for customer:', wishData.customerId);
+            // Mevcut bakiyeyi kontrol et
             const getMetafield = await fetch(
-                `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${wishData.customerId}/metafields.json`,
+                `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${data.customerId}/metafields.json`,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-Shopify-Access-Token': ACCESS_TOKEN
                     }
                 }
             );
 
-            if (getMetafield.ok) {
-                const metafields = await getMetafield.json();
-                console.log('Current metafields:', metafields);
-                
-                const jetonMetafield = metafields.metafields.find(
-                    m => m.namespace === 'custom' && m.key === 'jeton_bakiyesi'
-                );
-                
-                if (jetonMetafield) {
-                    currentBalance = parseInt(jetonMetafield.value) || 0;
-                    
-                    if (currentBalance < 1) {
-                        return {
-                            statusCode: 400,
-                            body: JSON.stringify({ error: 'Yetersiz jeton bakiyesi' })
-                        };
-                    }
+            const metafields = await getMetafield.json();
+            console.log('Mevcut metafields:', metafields);
 
-                    // Decrease balance by 1
-                    newBalance = currentBalance - 1;
-                    console.log('Updating balance:', { currentBalance, newBalance });
+            const jetonMetafield = metafields.metafields.find(
+                m => m.namespace === 'custom' && m.key === 'jeton_bakiyesi'
+            );
 
-                    // Update balance
-                    const updateBalance = await fetch(
-                        `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${wishData.customerId}/metafields.json`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-Shopify-Access-Token': ACCESS_TOKEN
-                            },
-                            body: JSON.stringify({
-                                metafield: {
-                                    namespace: 'custom',
-                                    key: 'jeton_bakiyesi',
-                                    value: newBalance.toString(),
-                                    type: 'number_integer'
-                                }
-                            })
+            if (!jetonMetafield || parseInt(jetonMetafield.value) < 1) {
+                return {
+                    statusCode: 400,
+                    body: JSON.stringify({ error: 'Yetersiz jeton bakiyesi' })
+                };
+            }
+
+            currentBalance = parseInt(jetonMetafield.value);
+            newBalance = currentBalance - 1;
+
+            console.log('Bakiye güncelleniyor:', {
+                currentBalance,
+                newBalance
+            });
+
+            // Bakiyeyi güncelle
+            const updateBalance = await fetch(
+                `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${data.customerId}/metafields.json`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Shopify-Access-Token': ACCESS_TOKEN
+                    },
+                    body: JSON.stringify({
+                        metafield: {
+                            namespace: 'custom',
+                            key: 'jeton_bakiyesi',
+                            value: newBalance.toString(),
+                            type: 'number_integer'
                         }
-                    );
+                    })
+                }
+            );
 
-                    if (!updateBalance.ok) {
-                        const errorText = await updateBalance.text();
-                        console.error('Balance update error:', errorText);
-                        throw new Error('Bakiye güncellenemedi');
-                    }
+            if (!updateBalance.ok) {
+                throw new Error('Bakiye güncellenemedi');
+            }
 
-                    // Save the wish
-                    console.log('Saving wish');
-                    const wishResult = await fetch(
-                        `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${wishData.customerId}/metafields.json`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-Shopify-Access-Token': ACCESS_TOKEN
-                            },
-                            body: JSON.stringify({
-                                metafield: {
-                                    namespace: 'custom',
-                                    key: 'dilekler',
-                                    value: JSON.stringify({
-                                        dilekler: [
-                                            ...(JSON.parse(jetonMetafield.dilekler || '{"dilekler":[]}').dilekler || []),
-                                            {
-                                                dilek: wishData.dilek,
-                                                tarih: new Date().toISOString()
-                                            }
-                                        ]
-                                    }),
-                                    type: 'json_string'
-                                }
-                            })
-                        }
-                    );
+            // Dileği kaydet
+            const dileklerMetafield = metafields.metafields.find(
+                m => m.namespace === 'custom' && m.key === 'dilekler'
+            );
 
-                    if (!wishResult.ok) {
-                        console.error('Wish save error:', await wishResult.text());
-                    }
-
-                    return {
-                        statusCode: 200,
-                        body: JSON.stringify({
-                            message: 'Dilek başarıyla kaydedildi',
-                            newBalance
-                        })
-                    };
+            let currentWishes = [];
+            if (dileklerMetafield) {
+                try {
+                    const parsedWishes = JSON.parse(dileklerMetafield.value);
+                    currentWishes = parsedWishes.dilekler || [];
+                } catch (e) {
+                    console.log('Mevcut dilekler parse edilemedi:', e);
                 }
             }
 
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ error: 'Kullanıcı bakiyesi bulunamadı' })
+            const newWish = {
+                dilek: data.dilek,
+                tarih: new Date().toISOString()
             };
+
+            const saveWish = await fetch(
+                `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${data.customerId}/metafields.json`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Shopify-Access-Token': ACCESS_TOKEN
+                    },
+                    body: JSON.stringify({
+                        metafield: {
+                            namespace: 'custom',
+                            key: 'dilekler',
+                            value: JSON.stringify({
+                                dilekler: [...currentWishes, newWish]
+                            }),
+                            type: 'json_string'
+                        }
+                    })
+                }
+            );
+
+            if (!saveWish.ok) {
+                console.error('Dilek kaydedilemedi:', await saveWish.text());
+                throw new Error('Dilek kaydedilemedi');
+            }
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    message: 'Dilek başarıyla kaydedildi',
+                    newBalance
+                })
+            };
+
         } else {
-            // Handle order paid webhook
-            console.log('Processing order paid webhook');
-            const data = JSON.parse(event.body);
-            
-            console.log('Shop name:', SHOP_NAME);
-            console.log('Access token:', ACCESS_TOKEN ? 'Present' : 'Missing');
+            // Sipariş webhook'u işleniyor
+            console.log('Sipariş işleniyor:', data);
 
             const customerId = data.customer && data.customer.id;
             if (!customerId) {
-                console.log('No customer ID found in order');
-                return { statusCode: 400, body: 'No customer ID' };
+                return { 
+                    statusCode: 400, 
+                    body: JSON.stringify({ error: 'Müşteri ID bulunamadı' })
+                };
             }
-
-            console.log('Customer ID:', customerId);
 
             let jetonMiktari = 0;
             if (data.line_items && Array.isArray(data.line_items)) {
-                console.log('Processing line items:', data.line_items.length);
-                
                 for (const item of data.line_items) {
-                    console.log('Processing item:', item.title);
-                    
                     const title = (item.title || '').toLowerCase();
                     const variant = (item.variant_title || '').toLowerCase();
                     const fullTitle = `${title} ${variant}`.toLowerCase();
                     
-                    console.log('Item details:', { title, variant, fullTitle });
+                    console.log('Ürün işleniyor:', { title, variant, fullTitle });
 
                     const numbers = fullTitle.match(/\d+/);
                     if (numbers) {
                         const number = parseInt(numbers[0]);
                         if (!isNaN(number)) {
                             jetonMiktari += number;
-                            console.log('Found token amount:', number);
+                            console.log('Bulunan jeton miktarı:', number);
                         }
                     }
                 }
             }
 
-            console.log('Total calculated tokens:', jetonMiktari);
+            console.log('Toplam jeton miktarı:', jetonMiktari);
 
             if (jetonMiktari > 0) {
-                console.log('Fetching current balance...');
+                // Mevcut bakiyeyi kontrol et
                 const getMetafield = await fetch(
                     `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${customerId}/metafields.json`,
                     {
                         headers: {
-                            'Content-Type': 'application/json',
                             'X-Shopify-Access-Token': ACCESS_TOKEN
                         }
                     }
@@ -196,27 +196,22 @@ exports.handler = async (event) => {
 
                 if (getMetafield.ok) {
                     const metafields = await getMetafield.json();
-                    console.log('Current metafields:', metafields);
-                    
                     const jetonMetafield = metafields.metafields.find(
                         m => m.namespace === 'custom' && m.key === 'jeton_bakiyesi'
                     );
                     
                     if (jetonMetafield) {
-                        currentBalance = parseInt(jetonMetafield.value) || 0;
+                        currentBalance = parseInt(jetonMetafield.value);
                     }
-                } else {
-                    console.log('Failed to fetch current balance:', await getMetafield.text());
                 }
 
                 newBalance = currentBalance + jetonMiktari;
-                console.log('Balance update:', {
+                console.log('Bakiye güncelleniyor:', {
                     currentBalance,
                     jetonMiktari,
                     newBalance
                 });
 
-                console.log('Updating balance...');
                 const response = await fetch(
                     `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${customerId}/metafields.json`,
                     {
@@ -238,42 +233,32 @@ exports.handler = async (event) => {
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Shopify API Error:', errorText);
-                    throw new Error(`Shopify API Error: ${response.status} ${errorText}`);
+                    throw new Error(`Bakiye güncellenemedi: ${errorText}`);
                 }
 
-                const result = await response.json();
-                console.log('Balance update result:', result);
+                console.log('Bakiye güncellendi');
             }
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    message: 'İşlem başarılı',
+                    jetonMiktari,
+                    newBalance
+                })
+            };
         }
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: 'Success',
-                jetonMiktari,
-                customerId,
-                currentBalance,
-                newBalance
-            })
-        };
-
     } catch (error) {
-        console.error('Detailed Error:', {
+        console.error('Hata:', {
             message: error.message,
-            stack: error.stack,
-            event: {
-                body: event.body,
-                headers: event.headers
-            }
+            stack: error.stack
         });
         
         return {
             statusCode: 500,
             body: JSON.stringify({
-                error: error.message,
-                details: 'Lütfen log kayıtlarını kontrol edin',
-                time: new Date().toISOString()
+                error: 'Bir hata oluştu: ' + error.message
             })
         };
     }
