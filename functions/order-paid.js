@@ -5,6 +5,7 @@ const ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
 exports.handler = async (event) => {
     let currentBalance = 0;
     let newBalance = 0;
+    let jetonMiktari = 0;  // Burada tanımlıyoruz
 
     try {
         console.log('========== YENİ İSTEK ==========');
@@ -65,6 +66,7 @@ exports.handler = async (event) => {
 
             currentBalance = parseInt(jetonMetafield.value);
             newBalance = currentBalance - 1;
+            jetonMiktari = 1;  // Dilek için 1 jeton kullanılıyor
 
             console.log('Bakiye güncelleniyor:', {
                 currentBalance,
@@ -161,7 +163,7 @@ exports.handler = async (event) => {
                 };
             }
 
-            let jetonMiktari = 0;
+            // Jeton miktarını hesapla
             if (data.line_items && Array.isArray(data.line_items)) {
                 for (const item of data.line_items) {
                     const title = (item.title || '').toLowerCase();
@@ -238,21 +240,26 @@ exports.handler = async (event) => {
 
                 console.log('Bakiye güncellendi');
             }
-
-            return {
-                statusCode: 200,
-                body: JSON.stringify({
-                    message: 'İşlem başarılı',
-                    jetonMiktari,
-                    newBalance
-                })
-            };
         }
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'İşlem başarılı',
+                jetonMiktari,
+                currentBalance,
+                newBalance
+            })
+        };
 
     } catch (error) {
         console.error('Hata:', {
             message: error.message,
-            stack: error.stack
+            stack: error.stack,
+            event: {
+                body: event.body,
+                headers: event.headers
+            }
         });
         
         return {
