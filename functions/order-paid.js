@@ -3,9 +3,25 @@ const SHOP_NAME = '4aaec3-2';
 const ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
 
 exports.handler = async (event) => {
+    // CORS headers
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type, x-wish-request',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    };
+
+    // OPTIONS request için response
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers,
+            body: ''
+        };
+    }
+
     let currentBalance = 0;
     let newBalance = 0;
-    let jetonMiktari = 0;  // Burada tanımlıyoruz
+    let jetonMiktari = 0;
 
     try {
         console.log('========== YENİ İSTEK ==========');
@@ -20,6 +36,7 @@ exports.handler = async (event) => {
             console.log('Body boş geldi');
             return { 
                 statusCode: 400, 
+                headers,
                 body: JSON.stringify({ error: 'İstek body\'si boş' })
             };
         }
@@ -29,6 +46,7 @@ exports.handler = async (event) => {
         console.log('İstek Türü:', isWishRequest ? 'Dilek İsteği' : 'Sipariş Webhook');
 
         const data = JSON.parse(event.body);
+        console.log('İşlenecek veri:', data);
         
         if (isWishRequest) {
             console.log('Dilek isteği işleniyor:', data);
@@ -36,6 +54,7 @@ exports.handler = async (event) => {
             if (!data.customerId || !data.dilek) {
                 return {
                     statusCode: 400,
+                    headers,
                     body: JSON.stringify({ error: 'Müşteri ID veya dilek metni eksik' })
                 };
             }
@@ -60,13 +79,14 @@ exports.handler = async (event) => {
             if (!jetonMetafield || parseInt(jetonMetafield.value) < 1) {
                 return {
                     statusCode: 400,
+                    headers,
                     body: JSON.stringify({ error: 'Yetersiz jeton bakiyesi' })
                 };
             }
 
             currentBalance = parseInt(jetonMetafield.value);
             newBalance = currentBalance - 1;
-            jetonMiktari = 1;  // Dilek için 1 jeton kullanılıyor
+            jetonMiktari = 1;
 
             console.log('Bakiye güncelleniyor:', {
                 currentBalance,
@@ -139,12 +159,16 @@ exports.handler = async (event) => {
             );
 
             if (!saveWish.ok) {
-                console.error('Dilek kaydedilemedi:', await saveWish.text());
+                const errorText = await saveWish.text();
+                console.error('Dilek kaydedilemedi:', errorText);
                 throw new Error('Dilek kaydedilemedi');
             }
 
+            console.log('Dilek başarıyla kaydedildi');
+
             return {
                 statusCode: 200,
+                headers,
                 body: JSON.stringify({
                     message: 'Dilek başarıyla kaydedildi',
                     newBalance
@@ -159,11 +183,11 @@ exports.handler = async (event) => {
             if (!customerId) {
                 return { 
                     statusCode: 400, 
+                    headers,
                     body: JSON.stringify({ error: 'Müşteri ID bulunamadı' })
                 };
             }
 
-            // Jeton miktarını hesapla
             if (data.line_items && Array.isArray(data.line_items)) {
                 for (const item of data.line_items) {
                     const title = (item.title || '').toLowerCase();
@@ -186,7 +210,6 @@ exports.handler = async (event) => {
             console.log('Toplam jeton miktarı:', jetonMiktari);
 
             if (jetonMiktari > 0) {
-                // Mevcut bakiyeyi kontrol et
                 const getMetafield = await fetch(
                     `https://${SHOP_NAME}.myshopify.com/admin/api/2024-01/customers/${customerId}/metafields.json`,
                     {
@@ -244,6 +267,7 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
+            headers,
             body: JSON.stringify({
                 message: 'İşlem başarılı',
                 jetonMiktari,
@@ -264,8 +288,10 @@ exports.handler = async (event) => {
         
         return {
             statusCode: 500,
+            headers,
             body: JSON.stringify({
-                error: 'Bir hata oluştu: ' + error.message
+                error: 'Bir hata oluştu: ' + error.message,
+                details: error.stack
             })
         };
     }
