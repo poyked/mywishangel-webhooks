@@ -1,0 +1,24 @@
+MAYA PEYNİR — GÜNCELLEME PAKETİ
+
+Bu paket, mevcut çalışan site üzerine uygulanır; sıfırdan kurulum değildir.
+
+1. Hostingde mevcut site dosyalarını ve veritabanını yedekleyin.
+2. ZIP'i bilgisayarınızda açın veya cPanel Dosya Yöneticisi ile mevcut sitenin çalıştığı klasöre çıkarın (şu an mayapeynir.com/test/).
+3. index.php, api.php, assets/ ve server/ mevcut karşılıkları üzerine yazılmalıdır. Ek bir üst klasör oluşturmayın.
+4. Hostingdeki .env, admin.php, kök .htaccess, storage verileri ve assets/images/uploads içindeki mevcut dosyaları SİLMEYİN. Klasörleri silip değiştirmeyin; birleştirerek üzerine yazın.
+5. Veritabanını sıfırlamayın; seed.json veya SQL dosyası içe aktarmayın. Panelde kaydedeceğiniz ayarlar mevcut veritabanına yazılır.
+6. Tarayıcıda Ctrl+F5 ile yenileyin. Yönetimde Ana sayfa ve referanslar bölümünü açın. Metinleri/görselleri ve ürün gruplarını düzenleyip Kaydet'e basın.
+7. İletişim bilgileri bölümünde telefon, WhatsApp ve e-posta adresinizi kontrol edin. SSS alanı boşsa başlangıç soruları güncel kargo tutarlarıyla gösterilir. Özel soru satırı biçimi: Grup | Soru | Cevap.
+8. Belgeler ve güven bilgileri bölümünden ürün bilgi kartlarını düzenleyebilirsiniz.
+9. Google Web Client ID pakette varsayılan olarak tanımlıdır. Hosting .env içindeki GOOGLE_CLIENT_ID önceliklidir. Eski veya boş bir kayıt varsa Entegrasyon bağlantıları bölümüne yeni kimliği girip kaydedin:
+757047488858-6f5hf7t87uqajnqetls551ljbook2c2h.apps.googleusercontent.com
+Google yetkili JavaScript kaynağı https://mayapeynir.com olarak kalır (/test eklenmez). Sitenizi www ile de açıyorsanız o kaynağı Google istemci ayarlarına ayrıca ekleyin.
+10. Yeni Google üyeliği için yayında ve dolu Kullanım Koşulları ve KVKK metinleri gerekir. Yeni üyeye ad-soyad ve telefon tamamlama ekranı gelir.
+11. E-posta taslağını kaydetmek gönderim başlatmaz. Gönderimi başlat düğmesi ayrı işlemdir. Mevcut worker cron görevinizi koruyun.
+
+PAKET KAPSAMI
+Yüklediğiniz arşivde bulunan uygulama dosyaları, güncellenmiş sürümleriyle eklenmiştir. Orijinal arşivde admin.php, kök .htaccess ve .env yoktu; hostingdeki mevcut dosyalar korunmalıdır.
+Eski storage/*.yedek* dosyaları ve sabit yönetici şifresi sıfırlayan eski server/delivery-update.php yardımcı dosyası bu pakete alınmadı. Mevcut yüklenmiş ürün görselleri bu arşivde bulunmayabilir; hostingdekileri koruyun.
+
+DOĞRULAMA
+JavaScript ve PHP sözdizimi kontrolleri geçti. Yerel Chromium testlerinde panelde taslak/bölüm/grup kaydetme, iletişim formu, SSS, ürün kartları, slider ve farklı ekran genişlikleri kontrol edildi. Google akışı taklit kimlikle denendi. Gerçek Google hesabı, canlı veritabanı, SMTP teslimi ve ücretli AI çağrıları hostingde ayrıca doğrulanmalıdır.
