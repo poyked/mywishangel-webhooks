@@ -1,0 +1,24 @@
+MAYA — PAKET GÖRÜNÜMÜ VE AYAR KAYDI DÜZELTMESİ
+
+Bu teslim ZIP değildir; V3 üzerine uygulanacak beş dosyadır.
+Mevcut dosyalarınızın ve veritabanınızın hosting yedeğini alın.
+Aşağıdaki dosyaları sitenizin çalıştığı klasörde AYNI YOLLARDAKİ dosyaların üzerine yazın:
+api.php
+server/bootstrap.php
+assets/site.js
+assets/admin-extra.js
+assets/storefront.css
+
+Ana site klasörü şu an /test ise yollar /test/api.php, /test/server/bootstrap.php, /test/assets/site.js vb. olacaktır. Klasörleri silmeyin; yalnızca bu dosyaları güncelleyin. .env, admin.php, yüklenen görseller ve mevcut storage dosyaları korunur.
+Yükleme tamamlanınca panelde ve mağazada Ctrl+F5 yapın. Panelde düzenleme yapmadan önce beş dosyanın da yüklenmesini bekleyin.
+
+DÜZELTMELER
+- Paket ana görseli bir tarafta, küçük ürün fotoğrafı + adı + gramajı + adedi diğer tarafta satır satır görünür. Ürünlerin satırlarında ayrı fiyat veya sepete ekleme düğmesi bulunmaz. En altta liste/güncel fiyat toplamları, paket indirimi, tek paket toplamı ve sepete ekleme düğmesi vardır.
+- Paket görseli sağa/sola alınabilir. Mobilde görsel üstte kalır. 1, 3 ve 6 bileşenle kontrol edildi.
+- Paket detayında da fiyatsız küçük ürün listesi kullanılır. Ürün adı/görseli kendi ürün sayfasına gider. Sepette gerçek ürün kodları ve miktarlar kullanılır.
+- Bağımsız ürün kartı vitrini isterseniz bölüm türünden Bağımsız ürün vitrini seçilir; sütun ayarı yalnız bu türde görünür.
+- Asıl kayıt hatası giderildi: paket bölüm kimliği, ayarların store kayıt kimliğini değiştiriyordu. Yeni vitrin bölümleri, tema menü adları ve ana sayfa görsel yönleri artık ana ayar kaydına yazılır.
+- Hatanın oluşturduğu paket kimlikli daha yeni ayarlar varsa ilk ayar okumasında ana kayda geri alınır. Yanlış kimlikteki kaynak kayıt silinmez; önceki ana ayar Önceki sürümler altında korunur. Zaten daha yeni olan doğru ana ayarın üzerine eski kayıt getirilmez. Panel bundan sonra yalnızca ana ayarı açar.
+
+Veritabanını sıfırlamayın; SQL veya seed içe aktarmayın.
+Yerel gerçek PHP iş kuralları/kayıt akışı ve Chromium arayüz kontrolleri geçti. Hostingde gerçek veritabanı üzerinde çalıştırma ve canlı ayar kurtarma işlemi henüz yapılmadı; bu dosyalar yüklendiğinde çalışacaktır.
