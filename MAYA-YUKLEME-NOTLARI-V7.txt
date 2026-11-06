@@ -1,0 +1,96 @@
+MAYA PEY — TAM GÜNCELLEME PAKETİ V7 — 6 KASIM 2026
+
+V6'dan sonraki son düzeltmeleri ve önceki site dosyalarını birlikte içerir.
+Mevcut çalışan test sitesinin üzerine uygulanır; sıfırdan kurulum değildir.
+
+YÜKLEME
+1. Hosting dosyalarını ve veritabanını yedekleyin.
+2. ZIP'i mevcut site klasörüne çıkarın (örneğin public_html/test/).
+   Arşivde fazladan üst klasör yoktur. Dosyaları üzerine yazın ve klasörleri
+   birleştirin. Klasörleri silip yeniden oluşturmayın.
+3. Mevcut .env, admin.php, kök .htaccess, storage içeriği, veritabanı ve
+   yüklediğiniz görselleri koruyun. Bu arşiv .env/admin.php/kök .htaccess
+   içermez; bu dosyalar ilk kaynakta bulunmadığından hostingdeki sürümleri
+   kullanılmaya devam eder. Seed veya SQL içe aktarmayın, veritabanını silmeyin.
+4. Tüm dosyalar yüklendikten sonra siteyi ve yönetimi açıp Ctrl+F5 yapın.
+   İlk açılışta gereken şema ve ortak paket uyarlamaları mevcut kayıtlar
+   korunarak uygulanır. Sonraki açılışlarda şema sürümü kontrol edilir.
+   Hosting kullanıcısının gerekli tablo uyarlama yetkisi bulunmalıdır.
+5. Mevcut server/worker.php cron'unu her 5 dakikada bir koruyun.
+   Yeni veya ikinci bir cron eklemeyin.
+
+V7 İLE GELEN SON DÜZELTMELER
+- Mağaza ve içerik > Ürünlerimiz sayfası: başlık, üst başlık, açıklama,
+  sayfa yolu etiketi, tüm ürünler filtresi ve destek alanı düzenlenebilir.
+- Mağaza ve içerik > Sayfa adresleri: Ürünlerimiz, Tanışma Paketleri, Hikâye,
+  Peynir Rehberi ve diğer menü sayfalarının adresleri değiştirilebilir.
+  Varsayılan yollar urunlerimiz ve tanisma-paketleri. Alan adı veya /test
+  yazmayın. Menü, kategori, önizleme ve site içi bağlantılar yeni yolu kullanır.
+  Kullanıcı isteği doğrultusunda eski adreslere yönlendirme eklenmez.
+- Paket ana görselinde yükleme, kütüphane, önizleme ve AI araçları.
+  Ortak paket görseli ürün ve vitrin verisinde aynı kayıttan gelir.
+- Paket düzenleyicisindeki sağ-sol yerleşimi kaydedilir; vitrinle aynı olur.
+- Kurumsal sayfa kayıtlı kapak görselini kullanır. Kurumsal/Hikâye bölümlerinin
+  başlık ve metinleri Sayfalar ve blog > Düzenle üzerinden değiştirilebilir.
+- Ana sayfa bölümlerinde kalıcı silme; varsayılanlardan tekrar oluşmama.
+- Ürün/paket tekli ve toplu silme, bağlı vitrin/kısayol/öneri temizliği.
+  Geçmiş siparişler korunur. Silinen ürünü içeren paketler kontrol için pasife
+  alınır. Açık siparişe ayrılmış ürün, sipariş tamamlanmadan silinmez.
+- Ürün listesinde 10/20/30/50 sayfalama; bütün ürünlerde arama ve sayfalar
+  arasında korunan toplu seçim.
+- Görsel isteğine uygulamanın koyduğu toplam 32000 karakter engeli kaldırıldı.
+  Sağlayıcı/model sınırları ayrıca geçerlidir. İstek veya marka metni bu
+  engel nedeniyle kesilmez; gerçek model uzunluk hatası ayrı açıklanır.
+- AI yerel bütçe, günlük adet, API bakiyesi, model erişimi, istek biçimi ve
+  bağlantı hataları ayrı gösterilir. Hesaptaki model listesi kontrol edilebilir.
+  Pazarlamada reddedilen uyumsuz seçenek için aynı kaynak/model korunarak
+  tek uyumluluk denemesi yapılır. Her hatada kota sorunu denmez.
+- Metin/pazarlama görevlerinde tam ortak marka kaynağı ve kaynak izi.
+  Görsel görevlerinde ilgili görsel marka kuralları ve gerçek referanslar.
+- Sesle yazmaya ayrı günlük sınır (varsayılan 20; 0 kapatır).
+  Genel bütçe ve toplam günlük istek sınırı da geçerlidir.
+- Her istekte 7 tablo oluşturma kontrolü yerine sürümlü şema kontrolü.
+- İçerik/alerjen/saklama metinlerinde kesmeden tür ve uzunluk doğrulaması.
+- Meta telefon biçimlerini eşitleme, boş telefon/e-posta özeti göndermeme,
+  IP'yi yalnız izinli checkout anından alma; ödeme callback IP'sini kullanmama.
+- Müşteri seçim kutuları, sipariş işlem hizası, entegrasyon kartı başlık ve
+  zeminleri, yönetici listesi ile müşteri listesinin ayrılması.
+- Sipariş etiketinde tek sipariş barkodu. Ürün etiketleri tek tek basılmaz.
+  Barkodla ürün hazırlama kontrolü ayrı işlemdir; tekrar stok düşmez.
+- Web ve Trendyol yayın izinleri ayrı. Trendyol işareti kapalı ürün gönderilmez.
+- Varsayılan logo aynı piksel ve şeffaflıkla kayıpsız WebP olarak küçültüldü;
+  eski PNG korunur. Panelde seçili özel logonuz korunur.
+
+ÖNCEKİ GELİŞTİRMELER DE DAHİL
+Mobil/masaüstü boşluk düzenleri, GA4/Meta izinli ölçüm ve dönüşüm kuyruğu,
+Sayfalar/Blog sekmeleri ve trafik, mobil menü, sosyal medya pazarlama stüdyosu,
+marka/AI bilgi merkezi, ortak paket kataloğu, Trendyol sipariş/ürün/stok
+altyapısı ve mevcut worker/cron dosyaları bu tam pakette bulunur.
+Pazarlama stüdyosunda video sahne taslağı/yükleme/kare incelemesi bulunur;
+yeni video dosyası üreten ayrı bir servis bağlanmış değildir. Reklam yayını
+manuel yapılır.
+
+KULLANIM NOTLARI
+SON-DUZELTMELER-KULLANIM.txt — yeni düzenleme alanları, adresler ve silme
+ENTEGRASYON-KULLANIMI.txt — GA4/Meta kimlikleri ve izinler
+MARKA-VE-PAZARLAMA-KULLANIMI.txt — marka merkezi, asistan ve ortak paketler
+TRENDYOL-VE-CRON-KULLANIMI.txt — kanallar, stok, tek sipariş etiketi ve cron
+
+İLK KONTROL
+1. Panelde Ürünlerimiz sayfasını açın, başlık ve adresi kaydedip yeniden açın.
+2. Sayfa adresleri ekranında istediğiniz yolları düzenleyin; menüden açın.
+3. Bir paketin ana görselini ve yerleşimini değiştirin, kaydedip tekrar açın.
+4. Kurumsal/Hikâye kapak görseli ve bölüm metinlerini kontrol edin.
+5. Ürün sayfalamasını, tekli/toplu seçimi ve gerektiğinde silmeyi deneyin.
+6. AI ayarlarında modeli/bütçeyi kontrol edin. Gerçek bir hata olursa artık
+   sağlayıcı HTTP kodu ve hata kategorisiyle nedenini ayırabilirsiniz.
+7. Mevcut cron'un son çalışma kaydına bakın. Yeni cron kurmayın.
+
+DOĞRULAMA
+Yerel iş kuralı ve tarayıcı testleri geçti. 79 PHP/JavaScript dosyası sözdizimi,
+15 sayfa üç ekran genişliğinde görünüm, paket/ürün/sipariş/AI/kanal kontrolleri
+ve bağımsız barkod okuma doğrulandı. Arşiv CRC, kaynakla dosya bazında eşleşme
+ve gerekli modüller ayrıca kontrol edilir.
+Gerçek hosting veritabanı/SMTP/PayTR, ücretli AI, gerçek Trendyol ve Google/Meta
+hesap işlemleri bu ortamdan çalıştırılmadı; sunucuda ayrıca doğrulanmalıdır.
+Bu ZIP'in GitHub'a yüklenmesi hosting sitenizi otomatik güncellemez.
