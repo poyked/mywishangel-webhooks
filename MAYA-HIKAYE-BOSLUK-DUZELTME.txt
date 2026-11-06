@@ -1,0 +1,12 @@
+MAYA — HİKÂYEMİZ BÖLÜMÜ İÇ BOŞLUK DÜZELTMESİ
+
+Üsküdar’dan bugünlere başlığının bulunduğu yeşil bölümün yatay iç boşluğu
+düzeltildi: masaüstü/tablette 32 px, mobilde 24 px. Dikey boşluk korunur.
+Yalnız Hikâyemiz sayfasındaki bu bölüme uygulanır.
+
+Arşivi mevcut /test site klasörüne çıkarın. assets/layout.css dosyasını
+üzerine yazın; assets klasörünü silmeyin. Ardından tarayıcıda Ctrl+F5 yapın.
+.env veya veritabanı değişikliği yoktur. AI V7.1 düzeltmesi ayrı pakettir;
+bu paket yalnız görsel iç boşluğu düzeltir.
+
+390, 768, 1440 ve 2048 px genişliklerde iç boşluk ve taşmama kontrolü geçti.
