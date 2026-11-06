@@ -1,0 +1,87 @@
+MAYA PEY — TAM GÜNCELLEME PAKETİ V6 — 6 KASIM 2026
+
+V5'ten sonraki tüm geliştirmeleri ve önceki site dosyalarını içerir.
+Bu paket mevcut çalışan sitenin üzerine uygulanır; sıfırdan kurulum değildir.
+
+YÜKLEME
+1. Hostingdeki dosyaları ve veritabanını yedekleyin.
+2. ZIP'i mevcut sitenin klasörüne çıkarın (şu anda örneğin public_html/test/).
+   Fazladan bir üst klasör yoktur. Dosyaları üzerine yazın, klasörleri birleştirin.
+3. Mevcut .env, admin.php, kök .htaccess, storage içeriği, veritabanı ve kendi
+   yüklediğiniz görselleri koruyun. Klasörleri silip yeniden oluşturmayın.
+   .env/admin.php/kök .htaccess ilk kaynakta olmadığı için bu arşivde yoktur.
+   Veritabanını sıfırlamayın; seed veya SQL içe aktarmayın.
+4. Bütün dosyalar yüklendikten sonra siteyi ve paneli açıp Ctrl+F5 yapın.
+   Veritabanı uyarlamaları ilk açılışta mevcut kayıtları koruyarak uygulanır.
+   Paketler eski kimlikleriyle ortak kataloğa alınır. Yeni kayıtlar için uzun
+   marka metinlerini taşıyabilen kayıt alanı kullanılır. Hosting MySQL
+   kullanıcısının gereken tablo uyarlama yetkisi bulunmalıdır.
+5. Mevcut server/worker.php cron'unu koruyun: PHP CLI ile her 5 dakikada bir.
+   Yeni bir cron eklemeyin. Entegrasyon bağlantılarındaki son çalışma göstergesi
+   yeni worker ilk kez çalıştıktan sonra görünür.
+
+BU SÜRÜMDE ÖNE ÇIKANLAR
+- Mobil/masaüstü ortak sayfa boşlukları, üst yol/başlık ölçüleri; paket ve ürün
+  detay düzenlerinin uyumu. Mobilde küçük yardımcı yazılarda ölçülü büyütme.
+- GA4 ve Meta Pixel/Conversions API ayarları, izinli olaylar ve ödeme onayından
+  sonra satın alma kuyruğu. Gizli anahtarlar sunucuda saklanır.
+- Sayfalar/Blog ayrı sekmeler, bloglar için yerel son 30 gün trafik göstergesi.
+- Mobil menüde logo, hesap/giriş bağlantıları ve sipariş takibi.
+- Sosyal medya pazarlama asistanı: proje/sekme/sürüm yapısı, gerçek katalog
+  seçimi, fikirler ve reklam metinleri, isteğe bağlı web araştırması, gerçek
+  ürün/logo referansları, düzenlenebilir tasarım ve PNG dışa aktarma.
+- Video sahne taslağı, video yükleme ve kareler üzerinden inceleme. Doğrudan
+  yeni video dosyası üreten API bu sürüme bağlı değildir. Reklam yayını manuel.
+- Marka / AI bilgi merkezi: tam master metin, TXT içe aktarma, kayıt doğrulama,
+  ayrı ürün/etiket kaynakları ve görev kuralları. Gönderdiğiniz marka belgesi
+  başlangıç kaynağıdır. Eski alanda kesilmiş metni yeniden tam ekleyebilirsiniz.
+  200.000 karakter sınırı aşılırsa açık hata gösterilir, sessizce kesilmez.
+- Ortak sepet/paket kataloğu: tek ürün veya paket oluşturma; mevcut ürünlerden
+  bileşen seçimi, gramaj/adet ve paket indirimi. Stok/fiyat gerçek ürünlerden
+  hesaplanır. Aynı paket tüm ürünler, paket vitrini ve ana sayfada seçilebilir.
+  Vitrin görünürlüğü ayrıdır; paket için ikinci bir fiziksel stok oluşturulmaz.
+- Ana sayfa gruplarında kayıtlı paketleri tek kart olarak seçme.
+- Son AI işlemleri ve zamanlanmış işlerde 5/10 kayıt seçimi ve sayfalama.
+- Trendyol özel mağaza/API alanları, sipariş aktarımı, ürün satış kanalları,
+  kategori/marka/özellik eşleştirme, manuel ürün gönderimi ve stok iş kuyruğu.
+- Siparişlerde müşteri adresi içermeyen ürün/kutu etiketi, Code128 barkod ve
+  barkodla hazırlama kontrolü. Okutma veya yazdırma ikinci kez stok düşürmez.
+- Worker son çalışma/görev sonuçları, hata alan görevden sonra diğerlerinin
+  devam etmesi; Trendyol için aynı mevcut cron kullanımı.
+
+DETAYLI KULLANIM NOTLARI
+ENTEGRASYON-KULLANIMI.txt — GA4/Meta kimlikleri, izinler, ölçüm/test ayarları
+MARKA-VE-PAZARLAMA-KULLANIMI.txt — marka merkezi, asistan ve ortak paketler
+TRENDYOL-VE-CRON-KULLANIMI.txt — kanal eşleştirme, stok, etiket, cron
+
+İLK KONTROL SIRASI
+1. Mağaza ve paket sayfalarını mobil/masaüstünde açın.
+2. Marka / AI bilgi merkezinde tam metni kaydedip yeniden açın.
+3. Ortak bir paketi düzenleyip ürün listesi, vitrin ve ana sayfadaki sonucuna bakın.
+4. Pazarlama asistanında proje oluşturup ürün/referans seçimini deneyin.
+5. Entegrasyon bağlantılarında cron son çalışma kaydına bakın.
+6. Trendyol bilgilerini kaydedip bağlantıyı kontrol edin; önce barkod/gramaj ve
+   kategori eşleşmelerini yapın. Otomatik sipariş/stok eşitlemesi varsayılan
+   kapalıdır. Stok eşitlemesini açmadan mevcut yerel stokları doğrulayın.
+   Stok eşitlemesi açıkken yerel satılabilir stok Trendyol'a gönderilir;
+   platform stoklarını içeri çekip birleştirmez. Fiyat eşitlemesi ayrıca seçilir.
+   Ürün gönderimi manuel başlatılır; API kabulü yayın/onay garantisi değildir.
+7. Mevcut örnek siparişte etiket ve barkod kontrolünü deneyin. Bu güncelleme
+   önceki test siparişini yeniden oluşturmaz. Daha önce hiç oluşturulmamışsa
+   mevcut tek-seferlik owner test mekanizması geçerlidir; yalanimvar@gmail.com
+   adresi, gerçek tahsilat yok, gerçek stok rezervasyonu ve test mail kuyruğu.
+
+/TEST'TEN CANLI KÖKE GEÇİŞ
+Entegrasyon bağlantıları > Site adresi APP_URL: https://mayapeynir.com
+Canlı ortam APP_ENV=production; ölçüm test modu TRACKING_TEST_MODE=false.
+Dosya, .env ve mevcut veritabanınızı koruyun. Cron'un hedefini yeni ana
+klasördeki server/worker.php yoluna güncelleyin; /test için ikinci cron açık
+kalmasın. Sitemap/LLM dosyaları site açılınca gerçek katalog ve yeni merkezi
+adrese göre yenilenir. Google yetkili kök alan adı ayarlarını koruyun.
+
+DOĞRULAMA DURUMU
+Yerel PHP iş kuralları, sözdizimi ve Chromium arayüz kontrolleri geçti.
+Arşiv CRC ve kaynakla dosya bazında eşleşmesi kontrol edildi. Gerçek hosting
+MySQL/cron/SMTP, ücretli AI, gerçek Trendyol hesabı veya Google/Meta olayları bu
+ortamdan denenmedi. Anahtarlarınızla ilk gerçek bağlantıda servis yanıtlarını
+kontrol edin. Bu ZIP'i hazırlamak hostinginize otomatik yükleme yapmaz.
