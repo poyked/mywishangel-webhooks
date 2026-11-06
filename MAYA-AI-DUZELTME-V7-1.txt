@@ -1,0 +1,33 @@
+MAYA — V7.1 PAZARLAMA AI DÜZELTMESİ
+
+Bu küçük paket, yüklenmiş V7 güncellemesinin üzerine uygulanır.
+
+SORUN
+Pazarlama fikir üretiminde sağlayıcı HTTP400 ve alan=response_format hatası
+veriyordu. Bu hata kota/bütçe hatası değildir. V7 uyumluluk kontrolü yalnız
+text.format adını tanıdığı için aynı JSON biçimi hatasının response_format
+adıyla döndüğü durumda uyumlu isteği tekrar göndermiyordu.
+
+DÜZELTME
+text.format ve response_format alan adları birlikte tanınır. Yalnız açıkça
+reddedilen seçenek kaldırılır. Aynı model, tam marka kuralları, ürünler ve
+referanslar korunur. JSON yanıt şeması metin talimatında korunur.
+Akıl yürütme seçeneği de ayrıca reddedilirse o da bir kez kaldırılabilir.
+En fazla iki uyumluluk isteği; aynı seçenek tekrar reddedilirse durur.
+Kota, hız, yetki ve ilgisiz alan hatalarında otomatik tekrar yapılmaz.
+
+YÜKLEME
+1. Mevcut server/ai.php ve server/ai-provider.php dosyalarını yedekleyin.
+2. Arşivi mevcut /test site klasörüne çıkarıp klasörleri birleştirin.
+   server klasörünü silmeyin. İçindeki iki PHP dosyasını birlikte üzerine yazın.
+3. Paneli yeniden açıp Fikirler öner işlemini tekrar deneyin.
+.env, veritabanı, ürünler ve model seçimi için değişiklik gerekmez.
+Yeni cron gerekmez. Hosting OPcache değişiklikleri otomatik görmüyorsa hosting
+panelinden PHP/OPcache önbelleğini yenileyin.
+
+DOĞRULAMA
+Ekrandaki HTTP400/response_format yanıtı (kod/tür olmadan da), tekrarın başarıyla
+fikir kaydetmesi, tam marka metni ve gerçek ürün referanslarının korunması,
+tekrar tavanı ve kota hatasında tekrar etmeme testleri geçti.
+58 AI kontrolü ve 23 pazarlama regresyon kontrolü geçti.
+Testler taklit sağlayıcı yanıtlarıyla yapıldı; gerçek hesabınızda panelden deneyin.
