@@ -1,0 +1,110 @@
+
+SON DÜZELTMELER — V4
+
+Bu ZIP, mevcut V3 üzerine tüm uygulama dosyalarıyla yüklenir. Önceki tek dosya düzeltmeleri de dahildir; onları ayrıca indirmeniz gerekmez.
+
+- Kahvaltı paketleri: bir tarafta ana paket görseli, diğer tarafta küçük ürün fotoğrafı, ürün adı, gramaj ve adet satırları. Her ürünün fiyatı ayrı gösterilmez; liste/güncel toplam, paket indirimi ve tek paket toplamı aşağıdadır. Paket detayında da aynı küçük ürün listesi kullanılır.
+- Yeni vitrin bölümleri, tema menü adları, logo ve ana sayfa görsel/metin yerleşimlerinin kaydını etkileyen hata giderildi. Paket kimliği artık ana ayarın store kimliğini değiştirmez.
+- Eski hatanın paket kimliği altında oluşturduğu daha yeni ayarlar varsa ana kayda geri alınır. Yanlış kimlikteki kaynak kayıt silinmez; önceki ana ayar Önceki sürümler altında saklanır. Zaten daha yeni olan doğru ana kaydın üzerine eski kayıt getirilmez. Veritabanını sıfırlamayın.
+- Paneldeki yeşil göstergelerin geniş oval görünmesi düzeltildi. Bekleyen kayıt yoksa küçük yeşil nokta, varsa kırmızı adet göstergesi görünür.
+- Tema logo ayarı da aynı kayıt hatasından etkileniyordu; bu paket onu da kapsar. Güncellemeden sonra eski logo görünürse yüklediğiniz görseli Tema ayarlarında kütüphaneden seçip Kaydet'e basın.
+
+YÜKLEME
+1. Hostingde dosyalarınızı ve veritabanınızı yedekleyin.
+2. ZIP'i mevcut sitenin çalıştığı klasöre çıkarın; örneğin public_html/test/. Dosyaları mevcutların üzerine yazın, klasörleri birleştirin. Arşivde fazladan üst klasör yoktur.
+3. Hostingdeki .env, admin.php, kök .htaccess, storage verileri ve mevcut yüklenmiş görselleri silmeyin. Bunlar bu ZIP ile sıfırlanmaz. SQL/seed içe aktarmayın.
+4. Bütün dosyalar yüklendikten sonra panelde ve mağazada Ctrl+F5 yapın. Panelden ayar kaydedip mağaza sayfasını yeniden açın.
+
+V4 KONTROLLERİ
+Gerçek PHP kayıt kodu ve publicStore verisiyle birden fazla paket içeren tam ayar kaydı, store kimliğinin korunması, eski yanlış kayıtların kurtarılması ve önceki ayarın yedeklenmesi yerelde doğrulandı. Chromium ile yeni vitrin kaydı/yeniden açılması, menü isimleri, görsel yönleri, 1/3/6 ürün satırı ve 390/768/1024/1366 ekran genişlikleri kontrol edildi. Gerçek hosting/MySQL üzerinde kurtarma henüz çalıştırılmadı; bu dosyalar yüklendiğinde devreye girer.
+
+ÖNCEKİ SÜRÜMLERİN BİLGİLERİ
+MAYA PEYNİR — GÜNCELLEME PAKETİ
+
+Bu paket, mevcut çalışan site üzerine uygulanır; sıfırdan kurulum değildir.
+
+1. Hostingde mevcut site dosyalarını ve veritabanını yedekleyin.
+2. ZIP'i bilgisayarınızda açın veya cPanel Dosya Yöneticisi ile mevcut sitenin çalıştığı klasöre çıkarın (şu an mayapeynir.com/test/).
+3. index.php, api.php, assets/ ve server/ mevcut karşılıkları üzerine yazılmalıdır. Ek bir üst klasör oluşturmayın.
+4. Hostingdeki .env, admin.php, kök .htaccess, storage verileri ve assets/images/uploads içindeki mevcut dosyaları SİLMEYİN. Klasörleri silip değiştirmeyin; birleştirerek üzerine yazın.
+5. Veritabanını sıfırlamayın; seed.json veya SQL dosyası içe aktarmayın. Panelde kaydedeceğiniz ayarlar mevcut veritabanına yazılır.
+6. Tarayıcıda Ctrl+F5 ile yenileyin. Yönetimde Ana sayfa ve referanslar bölümünü açın. Metinleri/görselleri ve ürün gruplarını düzenleyip Kaydet'e basın.
+7. İletişim bilgileri bölümünde telefon, WhatsApp ve e-posta adresinizi kontrol edin. SSS alanı boşsa başlangıç soruları güncel kargo tutarlarıyla gösterilir. Özel soru satırı biçimi: Grup | Soru | Cevap.
+8. Belgeler ve güven bilgileri bölümünden ürün bilgi kartlarını düzenleyebilirsiniz.
+9. Google Web Client ID pakette varsayılan olarak tanımlıdır. Hosting .env içindeki GOOGLE_CLIENT_ID önceliklidir. Eski veya boş bir kayıt varsa Entegrasyon bağlantıları bölümüne yeni kimliği girip kaydedin:
+757047488858-6f5hf7t87uqajnqetls551ljbook2c2h.apps.googleusercontent.com
+Google yetkili JavaScript kaynağı https://mayapeynir.com olarak kalır (/test eklenmez). Sitenizi www ile de açıyorsanız o kaynağı Google istemci ayarlarına ayrıca ekleyin.
+10. Yeni Google üyeliği için yayında ve dolu Kullanım Koşulları ve KVKK metinleri gerekir. Yeni üyeye ad-soyad ve telefon tamamlama ekranı gelir.
+11. E-posta taslağını kaydetmek gönderim başlatmaz. Gönderimi başlat düğmesi ayrı işlemdir. Mevcut worker cron görevinizi koruyun.
+
+PAKET KAPSAMI
+Yüklediğiniz arşivde bulunan uygulama dosyaları, güncellenmiş sürümleriyle eklenmiştir. Orijinal arşivde admin.php, kök .htaccess ve .env yoktu; hostingdeki mevcut dosyalar korunmalıdır.
+Eski storage/*.yedek* dosyaları ve sabit yönetici şifresi sıfırlayan eski server/delivery-update.php yardımcı dosyası bu pakete alınmadı. Mevcut yüklenmiş ürün görselleri bu arşivde bulunmayabilir; hostingdekileri koruyun.
+
+DOĞRULAMA
+JavaScript ve PHP sözdizimi kontrolleri geçti. Yerel Chromium testlerinde panelde taslak/bölüm/grup kaydetme, iletişim formu, SSS, ürün kartları, slider ve farklı ekran genişlikleri kontrol edildi. Google akışı taklit kimlikle denendi. Gerçek Google hesabı, canlı veritabanı, SMTP teslimi ve ücretli AI çağrıları hostingde ayrıca doğrulanmalıdır.
+
+İKİNCİ DÜZELTME TURU (V2)
+- Ürün sayfasındaki tekrarlanan Teslimat ve paketleme açılır bölümü kaldırıldı. Ana teslimat sayfası ve bilgi kartları korunur.
+- İletişim ve SSS, tam kullanılabilir sayfa alanına yayılır. SSS sorularına basınca cevap açılır.
+- Ana sayfa bölüm ve ürün grupları sekmelerle seçilir. Aynı anda bir bölüm ve bir grup düzenlenir.
+- Bölümlerde/gruplarda Özel arka plan rengi ve Tam genişlik seçenekleri var. Bilgi kartı 1–3 küçük üçlü kartlardır; tam genişlik bunlara uygulanmaz.
+- Slaytlarda Göster seçeneği var. Kapalı veya boş görselli slaytların metni ve sabit sırası korunur. Tüm slaytlar kapalıysa hero gösterilmez.
+- Ürün sıraları fareyle tutup sürüklenebilir; mobil kaydırma ve oklar devam eder.
+- AI alanına göre farklı varsayılan talimatlar oluşturur. Ürün etiket bilgileri bağlama gider. Web kaynaklarından araştırarak hazırla seçeneği varsayılan açık, ücretli web araması ve araştırma modelini kullanır. Kaynaklar sonuç altında görünür. Gerçek etikette olmayan besin değeri/saklama süresi üretilmemesi istenir. Mevcut ürün metinleriniz otomatik değişmez; ilgili alanda AI üretip Kullan ve Kaydet adımlarını uygulayın.
+- Maskotun 60 kareli animasyonlu WebP sürümü yaklaşık 370 KB, sabit WebP sürümü 7,7 KB. Eski GIF/PNG orijinalleri korunur.
+- Yükledikten sonra Ctrl+F5 yapın. Görünüm seçeneklerini Ana sayfa panelinden kaydedin.
+
+V2 KONTROLLERİ
+JavaScript ve PHP sözdizimi kontrolü, tarayıcıda sekme seçimi/kayıt, kapalı slayt koruma, renk/genişlik kaydı, mouse sürükleme, SSS akordiyon, destek sayfası genişliği, maskot kaynak seçimi, AI alan talimatı ve araştırma parametreleri doğrulandı. Sunucu yanıtları yerel testlerde taklit edilmiştir; gerçek AI/web çağrısı ve hosting davranışı ayrıca doğrulanmalıdır.
+
+ÜÇÜNCÜ GÜNCELLEME (V3) — ÖNCEKİ DÜZELTMELERİ DE İÇERİR
+
+ANA SAYFA / ASİSTAN
+- Görselli ana sayfa bölümlerinde görsel solda veya sağda seçilebilir. Mobilde görsel üsttedir.
+- Maya sohbetinde küçük maskot, sıcak marka renkleri ve yeni karşılama alanı var.
+- Doğal içerik/katkısız/koruyucusuz marka bilgileri Belgeler ve güven bilgileri panelinden yönetilir.
+- Sol yönetim menüsünün kaydırma konumu sayfa değiştirirken korunur.
+
+LOGO / E-POSTALAR
+- Tema ayarlarından logo seçilir/yüklenir, masaüstü ve mobil genişlikleri ayarlanır, üst menü adları değiştirilir. Öneri: şeffaf PNG/WebP, yaklaşık 600×250 piksel; logo oranı korunur.
+- E-posta bildirimlerinde logo, marka renkleri, sipariş özeti ve kargo bilgileri kullanılır. E-posta bildirimleri bölümünden marka adı/alt bilgi düzenlenip önizlenir.
+- E-posta kampanyaları taslağında tek bir adrese Test e-postası gönder alanı var. Kaydedilmemiş içerik de test edilir; kampanya gönderimi başlatılmaz. SMTP açık ve yapılandırılmış olmalıdır.
+
+SİPARİŞ / STOK
+- Siparişler: Hazırlanıyor → Kargo hazırlandı → Kargoya verildi → Teslim edildi.
+- Mevcut sistem satışa açık stoğu sipariş oluştururken rezerve eder. Bu rezervasyon korunur; kargoda ikinci kez stok eksiltilmez.
+- Ürün listesinde depodaki toplam, ayrılan ve satılabilir adetler görülür. Sipariş kargoya verilince ayrılan adet depodaki toplamdan düşer. Başarısız ödemede rezervasyon çözülür.
+
+KAHVALTI PAKETLERİ
+- Mağaza ve içerik → Kahvaltı paketleri sayfası: sayfa adı, açıklama, bölümler, görsel/galeri, görsel yönü ve ürün düzeni değiştirilebilir.
+- Paket ürünleri mevcut katalogdan gramaj/adet ile seçilir. Yeni ürün veya stok kodu oluşturulmaz.
+- Liste fiyatları toplamı, güncel satış fiyatları ve ek yüzde/TL paket indirimi hesaplanır. Paket detay sayfası ve her bileşenin kendi ürün bağlantısı vardır.
+- AI görsel üretimi seçilen paket ürünlerini bağlamında alır; ücretli AI kullanımı mevcut hesabınıza bağlıdır.
+- Kupon ve otomatik indirimler üst üste eklenmez; daha avantajlı seçenek uygulanır. Stok gerçek bileşenlerden kontrol edilir.
+
+DÜZENLİ GÖNDERİM / ÖZEL SEPET BAĞLANTISI
+1. Müşteri ödeme sayfasında isteğe bağlı Düzenli gönderim için hatırlatma istiyorum alanını seçer; 7/14/30/60/90 gün belirler.
+2. İlk ödeme PayTR tarafından onaylanınca yönetim paneline yeni talep gelir. Siparişler → Düzenli gönderim bölümünden Talebi onayla ile etkinleştirin.
+3. Yönetici ayrıca müşteri ve ödenmiş sipariş seçerek hatırlatma oluşturabilir. Elle kimlik/stok kodu yazılmaz.
+4. Varsayılan hatırlatma tarihi sonraki gönderimden 2 gün öncedir. Program ayarından 0–14 gün arasında değiştirilebilir.
+5. Genel düzenli müşteri indirimi başlangıçta %0'dır. Örneğin %10 yazarsanız en az iki ödenmiş siparişi olan müşterilere bu oranla teklif hazırlanır. Müşteri satırındaki İndirim / hatırlatma ayarı ile kişiye özel oran/gün belirlenebilir. Boş alan genel kuralı kullanır; özel %0 o müşteri için indirimi kapatır.
+6. Görev çalıştığında müşteriye marka tasarımlı e-posta ve özel sepet bağlantısı gönderilir. Aynı dönem için tekrar hatırlatma üretilmez. Panelde yeni/yaklaşan/zamanı gelen talepler sayaçta görünür.
+7. Özel bağlantı önceki seçimi güncel fiyat ve stokla açar. Üyeye ait teklif kendi hesabıyla, misafir teklifi gönderildiği e-posta adresiyle kullanılır. Teklif süresi, bağlantının sayfasında görünür. Önceden gönderilmiş teklif oranı sonradan ayar değişince değişmez.
+8. Müşteri sepeti inceler ve her siparişi kendisi öder. KARTTAN OTOMATİK TAHSİLAT, OTOMATİK SİPARİŞ VE OTOMATİK KARGO OLUŞTURULMAZ.
+9. Yenileme ödemesi onaylanınca sonraki dönem bir kez planlanır. Talep duraklatılır/iptal edilirse bekleyen hatırlatma gönderilmez ve o dönemin özel bağlantısı kapanır. Müşteri Hesabım bölümünden duraklatabilir veya iptal edebilir.
+10. Panelde Hatırlatmayı tamamla / sonraki dönem düğmesi, gerektiğinde manuel sonraki tarih içindir. Siparişi kargoya vermek ve ödeme onayı ayrı işlemlerdir.
+11. Sipariş, düzenli gönderim, yeni mesaj, yeni yorum ve başarısız e-postalar için menü sayaçları vardır; işlem sonrasında ve açık panelde yaklaşık 30 saniyede bir güncellenir. Sayı kırmızı, bekleyen yoksa nokta yeşildir.
+
+E-POSTALARIN OTOMATİK ÇALIŞMASI
+Hosting Cron İşleri bölümünde mevcut PHP worker görevinizi koruyun. Yoksa hostingdeki PHP komutuyla bu sitenin server/worker.php dosyasını her 5 dakikada bir çalıştırın:
+Zaman ifadesi: */5 * * * *
+Komut örneği: /usr/local/bin/php /home/HOSTING_KULLANICI/public_html/test/server/worker.php
+Bu bir örnektir; hostinginizin PHP yolu ve gerçek site klasörü kullanılmalıdır. Canlı köke geçince komuttaki /test kısmını da kaldırın. Aynı worker e-posta kuyruğu ve AI görevleri için de kullanılır. SMTP kapalıysa e-posta gönderilmez.
+
+TEST KLASÖRÜNDEN CANLI KÖKE GEÇİŞ
+Aynı uygulama kök alan adına taşınınca Entegrasyon bağlantıları → Site adresi (APP_URL) değerini https://mayapeynir.com yapın. Yeni ürün, paket, e-posta ve özel sepet bağlantıları bu adresten oluşur. Elle yazdığınız eski içerik/kampanya bağlantılarını kontrol edin; önceden gönderilmiş e-postalar kendiliğinden değişmez. Google JavaScript kaynağı hosttur, /test içermez.
+
+V3 DOĞRULAMASI
+PHP iş kuralları PHP 8.4 çalıştırıcısıyla kontrol edildi: rezervasyon/stok geçişleri, paket fiyat ve indirimleri, kupon çakışması, stok sınırları, gerçek test e-postası yönlendirme kodu, düzenli talep/yenileme, tekrar önleme, özel bağlantı sahipliği/süresi/iptali ve marka e-posta bağlantıları.
+Yerel Chromium testleri; panel kaydı, menü/sayaçlar, özel teklif sayfası, sepet/ödeme isteği, müşteri iptali ve mobil/tablet/masaüstü düzenini doğruladı. Bu testlerde dış API yanıtları taklit edildi. Gerçek SMTP teslimi, Google kimliği, PayTR tahsilatı ve canlı MySQL üzerinde uçtan uca deneme yapılmadı; hostingde kontrol edilmelidir.
