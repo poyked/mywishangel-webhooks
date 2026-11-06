@@ -1,0 +1,75 @@
+MAYA PEYNİR — TAM GÜNCELLEME PAKETİ V5
+
+Bu paket V4 ve sonraki tüm düzeltmeleri içerir. Mevcut çalışan site üzerine uygulanır; sıfırdan kurulum değildir.
+
+YÜKLEME
+1. Hostingde mevcut dosyaları ve veritabanını yedekleyin.
+2. ZIP'i sitenin şu an çalıştığı klasöre çıkarın (örneğin public_html/test/). Arşivde fazladan üst klasör yoktur. Dosyaları mevcutların üzerine yazın, klasörleri birleştirin.
+3. Mevcut .env, admin.php, kök .htaccess, storage verileri ve yüklediğiniz görselleri SİLMEYİN. Bu dosyaların bir kısmı ilk gönderdiğiniz arşivde yoktu ve bu pakette de yer almıyor. Veritabanını sıfırlamayın, SQL/seed içe aktarmayın.
+4. Bütün dosyalar yüklendikten sonra panelde ve mağazada Ctrl+F5 yapın. Siteyi bir kez açın; LLM ve sitemap dosyaları hostingdeki gerçek katalogdan yenilenecek.
+
+İLK YÖNETİCİ AÇILIŞINDA TEK TEST SİPARİŞİ
+Kullanıcının açık isteğiyle yalanimvar@gmail.com adresine bir örnek sipariş hazırlanır. Yönetici (owner) paneli açınca otomatik, tek seferlik ve tekrar etmeyen kayıt oluşturulur.
+- Yeni sipariş numaraları 1000'den başlayan sırayla ilerler. Daha önce numara ayrıldıysa test siparişi sıradaki numarayı alır. İç sistemdeki güvenli MAYA... kimlikleri ve PayTR bağlantıları korunur.
+- Bu bir SİMÜLASYONDUR. Gerçek ödeme alınmaz, PayTR tahsilatı yapılmaz, fiziksel gönderim veya fatura oluşturulmaz. Panel, hesap ve e-postalarda TEST / TAHSİLAT YOK yazısı vardır.
+- Test kaydı ödemesi onaylanmış/hazırlanıyor durumundadır. Stokta olan ilk paket, paket yoksa stokta olan bir ürün seçilir. Katalogda satışta ve stokta ürün yoksa panelde neden oluşturulamadığı yazılır; stok uydurulmaz.
+- GERÇEK stok rezervasyonu yapar. Hazırlandı / Kargoya verildi / Teslim edildi adımlarını deneyebilirsiniz. Kargoda ikinci kez satışa açık stok eksiltilmez. Test bitince kalan stoklarınızı kontrol edin.
+- Verdiğiniz e-postaya ait hesap varsa aynı hesap ve rol kullanılır; yönetici rolü değiştirilmez. Yoksa test müşteri kaydı hazırlanır. Yeni test müşterisi aynı doğrulanmış Google e-postasıyla giriş yapabilir. Önceden var olan diğer hesapların Google güvenlik kontrolleri korunur.
+- E-postalar yalnız bu test adresine kuyruğa alınır. Test siparişleri diğer işletme bildirim alıcılarına duyurulmaz. SMTP ve worker çalışınca iletilir; paket hazırlama sırasında gerçek e-posta gönderilmedi.
+- Test için etkin düzenli gönderim talebi de hazırlanır: sonraki tarih 2 gün sonrası, hatırlatma 2 gün önce, yalnız bu talebe özel %10 teklif. İlk worker turunda özel sepet bağlantılı hatırlatma denenebilir. Genel müşteri indirim kuralı değiştirilmez. Karttan otomatik tahsilat yoktur.
+- Müşteri listesinde pazarlama test kaydı bulunur; daha önce abonelikten çıkılmışsa veya engel kaydı varsa bu tercih bozulmaz. Kampanya gönderimi kendiliğinden başlatılmaz.
+- Satış raporları ve herkese açık gerçek alışveriş bildirimleri bu simüle siparişi gerçek satış olarak saymaz. Sipariş listesi ve stok testleri kaydı gösterir.
+- Eski/test siparişin detayına bakmak sepetinizi silmez; sadece o anda tamamlanan ödeme kendi sepetini temizler.
+
+SİPARİŞ TAKİBİ
+Sipariş takibi sayfasında oturum açıkken yeniden giriş isteyen sabit metin kaldırıldı. Sipariş numarası ve siparişte kullanılan e-posta ile sorgulama vardır. Numarayı bilmek tek başına yeterli değildir; adres gibi kişisel alanlar sorgu yanıtında açılmaz. Hesapta ve yönetimde sipariş numarası, tarih, ödeme ve kargo durumları görünür.
+
+PAKETLER SAYFASI VE PAKET DETAYI
+- Paketler / seçkiler yönetiminde üst başlık bandının rengi, arka plan görseli, yazı rengi, karartması ve kadrajı ayarlanır. Bandın yüksekliği korunur.
+- Paket vitrini küçük fotoğraf + ürün adı + gramaj + adet satırları ve tek paket toplamı kullanır.
+- Paketi incele sayfasında yinelenen alt ürün listesi kaldırıldı. Tek bir Paketin içindekiler alanı vardır; ilk başta hepsi kapalıdır. Bir ürün açılınca diğeri kapanır. Açılan satırda açıklama, içerik, alerjen, saklama ve gerçek ürün sayfası bağlantısı yer alır.
+- Galeri kare çerçevede gösterilir; ürünün oranı bozulmaz. Altına paketin kendi yorumları ve Birlikte keşfedin ürünleri eklenmiştir.
+- Paket yorumları yönetici onayından sonra görünür. Doğrulanmış alışveriş kontrolü paketin gerçek sipariş bileşenlerinden yapılır; peynir yorumları paket yorumu gibi kopyalanmaz.
+
+PAKET AI GÖRSELLERİ
+- Görsel üretimi pakette seçili ürünlerin KENDİ ANA GÖRSELLERİNİ referans olarak gönderir; yalnız isimlerden rastgele paket üretmez.
+- Ürün ekleme/çıkarma ile referans küçük görselleri güncellenir. Adet/gramaj bilgileri ile kullanıcının kutu, strafor veya ahşap kompozisyon isteği iletilir.
+- Eksik ürün fotoğrafı varsa ücretli isteğe geçmeden hata gösterilir. Gerçek fotoğraflar çoklu görsel düzenleme isteğinde kullanılır; ürünün etiketi/biçimi ve marka kimliğinin korunması istenir.
+- Üretim mevcut AI bağlantınızı, model seçiminizi ve bütçenizi kullanır. Bu paketin kontrolünde ücretli AI çağrısı yapılmadı. Sonuç Kullan ve ardından Kaydet denmeden mevcut görseli değiştirmez.
+
+ANA SAYFA KISAYOLLARI
+Ana sayfa ve referanslar → Üst kısayol düğmeleri sekmesi:
+- Heronun altındaki Beyaz / Kaşar / Tanışma paketleri / Tüm ürünler düğmeleri eklenir, kaldırılır, sıralanır, kapatılır, adlandırılır.
+- Hedefler sayfa, kategori, ürün, paket veya yayındaki içerikten seçilir. Varsayılan dört düğme, en fazla 12 düğme kullanılabilir.
+- Tüm düğmeler şeffaf zeminli, ince çerçeveli ve siyah yazılıdır; üzerine gelince mevcut tema yeşiline döner. Son düğme sürekli dolu renkte değildir. Mobilde iki sütun ve daha küçük ölçüler kullanılır.
+
+PEYNİR KATEGORİLERİ
+Kategori seçimi sayfayı yeniden yüklemeden yalnız ürün alanını değiştirir; seçtiğiniz yerde kalır. Seçili kategori, sıralama ve tarayıcı geri/ileri davranışı korunur. /test ve canlı kök bağlantıları aynı merkezi adres ayarını kullanır.
+
+ŞEFFAF LOGO / E-POSTA
+PNG yüklemede ve boyutlandırmada şeffaflık korunur. PNG kaynaklar PNG kalır; logo alanı PNG olarak kaydedilir. E-posta şablonları WebP logolar için şeffaf PNG sürümü üretir; bildirimler ve kampanyalar bunu kullanır. Görsel URLleri içerik sürümü taşır. Bu değişiklik yeni oluşturulan e-postalara uygulanır; eski gönderilmiş e-postalar değişmez.
+
+LLM DOSYALARI / SITEMAP
+Ana klasörde:
+llm.txt — uyumluluk/kaynak indeksi
+llms.txt — ana İngilizce rehber
+llms-en.txt — İngilizce rehber
+llms-tr.txt — Türkçe rehber
+llms-full.txt — iki dilli ayrıntılı ürün bilgileri
+sitemap.xml — yayındaki sayfa, kategori, ürün ve paketlerin site haritası
+robots.txt — ortamın tarama kuralları
+
+Dosyalar gerçek katalog verisinden otomatik yenilenir; müşteri, sipariş, ödeme ve özel hesap verileri içermez. ZIP'teki başlangıç dosyaları ana alan adına göre hazırlanmıştır. Yükledikten sonra siteyi açınca mevcut /test adresi ve gerçek veritabanıyla yeniden üretilir. Test/önizleme kurulumu indekslemeye kapalı kalır.
+Canlı köke geçince Entegrasyon bağlantıları → Site adresi (APP_URL) değerini https://mayapeynir.com yapın. Üretilen bağlantılardaki /test otomatik kalkar. Canlı indeksleme için yayın ortamı APP_ENV=production olmalıdır. Kök .htaccess dosyanız korunur; bu .txt/.xml dosyaları için ek rewrite gerekmemektedir.
+
+E-POSTA / HATIRLATMA GÖREVİ
+Mevcut SMTP ve cron ayarlarını koruyun. server/worker.php dosyası hostingin PHP komutuyla her 5 dakikada bir çalışmalıdır.
+Örnek zaman: */5 * * * *
+Örnek komut: /usr/local/bin/php /home/HOSTING_KULLANICI/public_html/test/server/worker.php
+Bu bir örnektir; gerçek kullanıcı/klasör/PHP yolu hostinginize göre olmalıdır. Canlı köke taşınınca cron yolu da güncellenir. SMTP kapalıysa kuyruğa alınmış e-postalar gönderilmez.
+
+ÖNCEKİ DÜZELTMELER DE DAHİLDİR
+Ana ayarın paket kimliği altında kaydolması hatası ve güvenli ayar kurtarma; logo/menü adları; görsel sağ/sol; ana sayfa sekmeleri/renk/genişlik; slayt aç/kapat; mouse ile ürün sırası kaydırma; iletişim ve SSS; profesyonel e-postalar ve tek adrese taslak test; gerçek bileşenli paket fiyatları; düzenli gönderim ve özel sepet bağlantıları; menü sayaçları; şeffaf maskot ve Maya asistanı gibi önceki çalışmalar korunur.
+
+DOĞRULAMA
+Yerel gerçek PHP iş kuralları ve Chromium arayüz kontrolleri geçti. Gerçek PHP/GD ile PNG şeffaflığı ve boyutlandırma, AI referans dosyaları ve çoklu görsel isteği doğrulandı. LLM/sitemap dosyalarında dil, XML, özel veri hariç tutma ve /test→kök geçişi kontrol edildi. Bu ortamdan hostingdeki gerçek MySQL'e bağlanılmadı; gerçek SMTP teslimi, PayTR tahsilatı veya ücretli AI üretimi yapılmadı.
