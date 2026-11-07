@@ -1,0 +1,101 @@
+MAYA — TAM GÜNCELLEME PAKETİ V9 — 7 KASIM 2026
+
+Önceki tam V8, marka bilgisi V8.1 ve aşağıdaki son düzeltmelerin tamamını
+birlikte içerir. Önceki küçük ZIP'leri ayrıca yüklemeniz gerekmez.
+Mevcut çalışan test sitesi üzerine uygulanır; sıfırdan kurulum değildir.
+
+YÜKLEME
+1. Hosting dosyalarını ve veritabanını yedekleyin.
+2. ZIP'i mevcut site klasörüne çıkarın (örneğin public_html/test/).
+   Dosyaları üzerine yazın, klasörleri birleştirin; klasörleri silmeyin.
+3. .env, mevcut admin.php, kök .htaccess, storage, veritabanı ve kendi
+   yüklediğiniz görselleri koruyun. Kaynakta admin.php ve kök .htaccess
+   bulunmadığı için ZIP bunları içermez; hostingdeki sürümler kullanılmaya
+   devam eder. Seed veya SQL içe aktarmayın, veritabanını sıfırlamayın.
+4. Tüm dosyalar yüklendikten sonra yönetimde ve mağazada Ctrl+F5 yapın.
+5. Mevcut server/worker.php cron'u 5 dakikada bir çalışmaya devam eder.
+   Yeni veya ikinci bir cron gerekmez. GitHub'a ZIP yüklemek hostingi
+   otomatik güncellemez.
+
+MOBİL HERO
+Ana sayfa / referanslar > Ana görsel ve slaytlar > Mobil hero yerleşimi:
+- Yazı üstte · görsel altta (mevcut): önceki mobil görünüm korunur.
+- Yazı görselin üzerinde: beyaz başlık/metin ve koyu yarı saydam perde.
+Ayrı Mobil ana sayfa görseli alanından dikey görsel seçebilirsiniz. Görsel
+üstü mod alanı doldurur; kadraj kenarlardan kırpılabilir. Mobil odak noktası
+seçimi kullanılmaya devam eder. Masaüstü Hero yerleşimi bağımsızdır.
+Sayfayı kaydedin. Slayt geçişi/duraklatma korunur; uzun metin alanı büyütür.
+
+EKONOMİK MODEL SEÇİMİ
+AI asistanı ve modeller > Göreve göre modeller:
+- GPT-6 Luna: en ekonomik referans sınıfı; sohbet, kısa metin ve ilk reklam
+  fikirleri için başlangıç önerisi.
+- GPT-6.1 Terra: ekonomik; daha uzun metin/belge ve ayrıntılı araştırma.
+- GPT-6.1 Sol: dengeli; yaratıcı kampanyalar ve daha zor içerik işleri.
+- GPT-6 Astra: en yüksek maliyet sınıfı; rutin işlere önerilmez.
+Seçili modelin altında 1 milyon token için panelin giriş, önbellekli giriş
+ve çıkış referans tarifesi gösterilir. Bu katsayılar önceki yerel bütçe
+hesabıyla aynıdır; güncel sağlayıcı fiyatı olarak doğrulanmamıştır.
+Fiyat değişikliği, çıktı uzunluğu ve kullanılan araçlar gerçek maliyeti
+etkileyebilir. Model değiştirmek veya bilgi metnine bakmak üretim isteği
+başlatmaz. Seçim yapıp AI ayarlarını kaydedin.
+
+Mevcut kayıtlı modeller otomatik değiştirilmez. Yeni ve henüz ayarsız
+kurulumda sohbet/metin/pazarlama Luna, araştırma Terra ile başlar.
+GPT-4 yeni seçim önerilerinden çıkarılır; önceden kayıtlıysa kendi alanında
+kayıtlı eski model olarak korunur. API bağlantısını kontrol et / modelleri
+getir düğmesi hesap model listesini getirir; maliyet etiketleri korunur.
+Listede görünmeyen model erişimi doğrulanmış sayılmaz. Luna'nın API kimliği
+gpt-6-luna'dır. Model kimlikleri OpenAI'ın resmî SDK'sında kontrol edildi:
+https://github.com/openai/openai-python/blob/main/src/openai/types/shared/chat_model.py
+Güncel resmî fiyat sayfasına bu ortamdan erişilemedi (HTTP 403).
+
+GÖREVE ÖZEL KURALLAR
+Marka ve AI bilgi merkezi > Göreve özel kurallar:
+Müşteri asistanı, sayfa/ürün/SEO, pazarlama, görsel ve raporlama alanları için
+marka belgenizden kısa başlangıç metinleri hazırlandı. Eski boş alanlar bu
+metinlerle açılır ve ilgili AI görevinde kullanılır. Dolu özel kurallarınız,
+ana marka metniniz, ürün kaynakları ve etiket bilgileriniz korunur.
+Bilgi merkezini kaydet düğmesiyle tercihlerinizi kalıcılaştırabilirsiniz.
+Sonradan bilerek boşaltıp kaydettiğiniz alan tekrar otomatik doldurulmaz.
+Hazır metinler MAYA-GOREV-KURALLARI.txt içinde ayrıca bulunur.
+
+BİLDİRİM 401 TEKRARI
+Bildirim sorgusu oturum/yetki hatası 401 veya 403 aldığında artık 30 saniyede
+bir sürekli tekrar etmez: otomatik kontrol durur ve panelde açıklama
+çıkar. Formlar ve kaydedilmemiş girdiler değiştirilmez. Başarılı yeni
+yönetici girişinde sorgulama yeniden başlar. Çıkış/giriş sırasında eski
+isteklerin yeni kullanıcının rozetlerini değiştirmesi önlenir.
+Bu düzenleme yetki kontrolünü kaldırmaz; gerçek hostingde oturumun niçin
+reddedildiği bu ortamdan doğrulanmadı. Yeniden girişten sonra hâlâ 401
+olursa Network > admin-notifications isteğinin Response içeriği ve oturum
+çerezleri hostingde ayrıca incelenmelidir. contentscript.js eklenti
+uyarıları site kaynaklarında bulunmaz ve bu düzeltmenin konusu değildir.
+
+MARKA EK BİLGİSİ (V8.1 DE DAHİL)
+Güven bilgileri > Maya asistanı > Marka hakkında ek bilgi alanında eski
+2.000 karakterde sessiz kesme kaldırıldı; 20.000 karaktere kadar tam kayıt
+vardır. Aşımda hata gösterilir ve eski kayıt korunur. Eskiden kesilmiş
+metnin devamı otomatik geri getirilemez; isterseniz ekteki
+MAYA-ASISTAN-MARKA-OZETI.txt metnini yapıştırıp kaydedin.
+
+ÖNCEKİ DÜZELTMELERİN TAMAMI DAHİL
+Paketlerde ayrı kısa/uzun açıklama ve SEO alanları; mobil iki kartlık yatay
+öneriler; servis bağlantılarında sekmeler ve bağımsız kaydet; işlem/sürüm
+kayıtlarında sayfalama/tarih filtresi; yönetim bölüm düzenleri; düzenlenebilir
+sayfa adresleri ve bağlantılar; paket görseli/yerleşim/silme; tam marka
+kaynağı; pazarlama response_format uyumluluğu; Hikâye iç boşluğu; GA4/Meta,
+Trendyol kanalları ve mevcut worker dosyaları tam kaynakta korunur.
+Ayrıntılar SON-DUZELTMELER-KULLANIM.txt ve diğer kullanım dosyalarındadır.
+Video sahne taslağı/yükleme vardır; ayrı bir video üretim servisi bağlı
+değildir. Reklam yayını manuel yapılır.
+
+DOĞRULAMA
+Yerel testlerde model kataloğu/fiyat referansı, görev kuralları, tam marka
+bağlamı, mevcut kayıtların korunması ve API normalizasyonu kontrol edildi.
+Tarayıcıda model seçim/kayıt, görev kuralları, 401 durdurma/tekrar giriş,
+33 yönetim görünümü ve 15 mağaza sayfası farklı genişliklerde kontrol edildi.
+Mobil hero 320/390/430/760 px, uzun metin, slayt kontrolleri ve bağımsız
+masaüstü düzeni doğrulandı. Arşiv kaynak eşitliği, CRC ve hash'leri kontrol
+edilir. Gerçek hosting/PayTR/SMTP/ücretli AI/Trendyol/GA4/Meta hesaplarında
+işlem yapılmadı; yerel sağlayıcı ve veri taklitleri kullanıldı.
