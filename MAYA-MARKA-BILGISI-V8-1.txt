@@ -1,0 +1,22 @@
+MAYA — MARKA EK BİLGİ DÜZELTMESİ V8.1 — 7 KASIM 2026
+
+V8 tam paketinin üzerine uygulanacak küçük düzeltmedir.
+
+Sorun: Güven bilgileri / belgeler > Maya asistanı · Marka bilgileri > Marka hakkında ek bilgi alanı sunucuda sessizce 2.000 karaktere kesiliyordu. Kelime sınırı değildi.
+
+Düzeltme: 20.000 karaktere kadar metin eksiksiz kaydedilir. Sınır aşımı veya geçersiz veri türünde açık hata gösterilir; mevcut kayıt değiştirilmez. Türkçe karakterler doğru sayılır, satır sonları ve metin korunur. Panelde sınır ve alanın amacı açıklanır.
+
+YÜKLEME
+1. Mevcut site dosyalarının yedeğini alın.
+2. api.php ve assets/admin.js dosyalarını çalışan /test klasöründeki aynı konumlara, mevcut dosyaların üzerine yükleyin. Diğer dosyaları/klasörleri silmeyin.
+3. .env, veritabanı, storage ve yüklenen görseller aynen korunur. Seed veya SQL içe aktarmayın. Yeni cron gerekmez.
+4. Tüm dosyalar yüklendikten sonra yönetim panelinde Ctrl+F5 yapın.
+5. Önceden kesilerek kaydedilmiş metnin kaybolan devamı otomatik geri getirilemez. İsterseniz ekteki MAYA-ASISTAN-MARKA-OZETI.txt metnini Marka hakkında ek bilgi alanına yapıştırıp Kaydet'e basın. Bu paket marka kaydınızı otomatik değiştirmez.
+
+ALANIN GÖREVİ
+Müşteri sohbetinde ek bilgi brandFacts olarak kullanılır. Tam ana marka kuralları ayrıca Marka ve AI bilgi merkezinden gelir. Ek alan bütün yönetim AI görevlerine bağımsız ana kaynak olarak eklenmez. Güncel ürün/etiket/fiyat/stok/kargo kayıtları kendi kaynaklarında kalır.
+
+DOĞRULAMA
+Gerçek API kayıt koduyla 29 kontrol geçti: eski sınırı aşan Türkçe metin, tam sınır, satır sonları, boş metinle temizleme, yanlış tür ve sınır aşımında kayıtların korunması, verilen özetin tam kaydı. Tarayıcıda uzun metinle kaydet/yeniden aç, kapalı onay kutusunun korunması ve 3 ekran genişliği geçti. Sağlayıcı taklidiyle uzun ek metnin ve ortak ana marka kaynağının gerçek sohbet istek gövdesine eksiksiz aktarılması doğrulandı. Gerçek ücretli AI çağrısı yapılmadı. PHP/JS sözdizimi kontrolleri geçti.
+
+GitHub ZIP teslimidir; hosting otomatik güncellenmez.
